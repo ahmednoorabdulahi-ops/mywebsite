@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Alfaiz Integrated Academy | School Management System</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f4f9;
+            color: #1e2a3e;
+            scroll-behavior: smooth;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 25px;
+        }
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 12px 28px;
+            border-radius: 60px;
+            margin: 20px 0 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+        .school-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1e6f5c;
+        }
+        /* Cover */
+        .cover-area {
+            position: relative;
+            margin: 20px 0 30px;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.1);
+        }
+        .cover-img-wrapper {
+            width: 100%;
+            height: 260px;
+            position: relative;
+        }
+        .cover-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .edit-cover-btn {
+            position: absolute;
+            bottom: 16px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(6px);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+        }
+        .academy-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .academy-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.6rem;
+            background: linear-gradient(135deg, #0b3b5f, #1b7a7a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .stats-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 28px;
+            padding: 18px 28px;
+            flex: 1;
+            min-width: 180px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            box-shadow: 0 5px 14px rgba(0,0,0,0.05);
+        }
+        .stat-icon {
+            font-size: 2.5rem;
+            color: #1e6f5c;
+        }
+        .stat-info h3 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .classes-section {
+            background: white;
+            border-radius: 28px;
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+        .classes-scroll {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .class-badge {
+            background: #eef2fa;
+            padding: 10px 20px;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #cbdde9;
+        }
+        .class-badge.active {
+            background: #1e6f5c;
+            color: white;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            margin: 30px 0;
+        }
+        @media (max-width: 880px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+        .info-card {
+            background: white;
+            border-radius: 28px;
+            padding: 20px 24px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e9edf2;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .people-list {
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+        .person-item {
+            display: flex;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid #eef2f8;
+            align-items: flex-start;
+        }
+        .person-img {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #d9e3ec;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .person-details {
+            flex: 1;
+        }
+        .person-name {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .person-meta {
+            font-size: 0.75rem;
+            color: #4f6f8f;
+            margin-top: 4px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .edit-person-btn {
+            background: none;
+            border: 1px solid #bac8d9;
+            border-radius: 40px;
+            padding: 5px 12px;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+        .add-btn {
+            background: #1e6f5c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .contact-location-wrapper {
+            background: white;
+            border-radius: 28px;
+            padding: 20px 28px;
+            margin: 20px 0 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        .contact-block, .location-block {
+            flex: 1;
+        }
+        .edit-info-btn {
+            background: #eef2fa;
+            border: none;
+            margin-top: 12px;
+            padding: 6px 14px;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(3px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            max-width: 500px;
+            width: 90%;
+            border-radius: 32px;
+            padding: 28px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .modal-content input, .modal-content select, .modal-content textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccd7e4;
+            border-radius: 18px;
+        }
+        .image-upload-area {
+            border: 1px dashed #1e6f5c;
+            border-radius: 20px;
+            padding: 10px;
+            text-align: center;
+            margin: 12px 0;
+            cursor: pointer;
+            background: #f9fbfd;
+        }
+        .image-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-top: 8px;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.8rem;
+        }
+        .class-stats {
+            font-size: 0.7rem;
+            background: rgba(0,0,0,0.1);
+            border-radius: 30px;
+            padding: 2px 8px;
+            margin-left: 6px;
+        }
+        i { margin-right: 4px; }
+        .btn-small {
+            background: #eef2fa;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="school-title"><i class="fas fa-graduation-cap"></i> Alfaiz Integrated Academy</div>
+        <div><i class="fas fa-globe"></i> Free Access Portal</div>
+    </div>
+
+    <!-- Cover Area -->
+    <div class="cover-area">
+        <div class="cover-img-wrapper">
+            <img id="coverImage" class="cover-img" src="https://placehold.co/1400x260/2c5a7a/ffffff?text=Alfaiz+Integrated+Academy" alt="Cover">
+            <button class="edit-cover-btn" id="editCoverBtn"><i class="fas fa-upload"></i> Change Cover Picture</button>
+        </div>
+    </div>
+
+    <div class="academy-header">
+        <h1>📚 ALFAIZ INTEGRATED ACADEMY</h1>
+        <p>Excellence in Education | Holistic Development | Free Access</p>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-info"><h3 id="totalStudentsCount">0</h3><p>Total Students</p></div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-chalkboard-user"></i></div><div class="stat-info"><h3 id="totalTeachersCount">0</h3><p>Total Teachers</p></div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-school"></i></div><div class="stat-info"><h3 id="totalClassesCount">0</h3><p>Total Classes</p></div></div>
+    </div>
+
+    <!-- Classes Section -->
+    <div class="classes-section">
+        <div class="classes-title"><i class="fas fa-graduation-cap"></i> Academic Classes (Click to Filter)</div>
+        <div class="classes-scroll" id="classesContainer"></div>
+        <p style="font-size:0.75rem; margin-top:8px;"><i class="fas fa-info-circle"></i> Click any class to filter students and teachers by that class.</p>
+    </div>
+
+    <!-- Students & Teachers Panels -->
+    <div class="dashboard-grid">
+        <div class="info-card">
+            <div class="card-header"><h2><i class="fas fa-user-graduate"></i> Students</h2><button class="add-btn" id="globalAddStudentBtn">+ Add Student</button></div>
+            <div id="studentsList" class="people-list"></div>
+        </div>
+        <div class="info-card">
+            <div class="card-header"><h2><i class="fas fa-chalkboard-user"></i> Teachers</h2><button class="add-btn" id="globalAddTeacherBtn">+ Add Teacher</button></div>
+            <div id="teachersList" class="people-list"></div>
+        </div>
+    </div>
+
+    <!-- Contact & Location -->
+    <div class="contact-location-wrapper">
+        <div class="contact-block">
+            <h3><i class="fas fa-address-card"></i> Contact Information</h3>
+            <div id="contactDisplay">
+                <p><i class="fas fa-phone-alt"></i> <span id="contactPhone">+254 700 123456</span></p>
+                <p><i class="fas fa-envelope"></i> <span id="contactEmail">info@alfaizacademy.edu</span></p>
+                <p><i class="fas fa-globe"></i> <span id="contactWeb">www.alfaizacademy.com</span></p>
+            </div>
+            <button class="edit-info-btn" id="editContactBtn"><i class="fas fa-pen"></i> Edit Contact</button>
+        </div>
+        <div class="location-block">
+            <h3><i class="fas fa-map-marker-alt"></i> Location & Date</h3>
+            <div id="locationDisplay">
+                <p><i class="fas fa-location-dot"></i> <span id="schoolLocation">123 Knowledge Street, Nairobi, Kenya</span></p>
+                <p><i class="far fa-calendar-alt"></i> <span id="currentDateDisplay"></span></p>
+            </div>
+            <button class="edit-info-btn" id="editLocationBtn"><i class="fas fa-edit"></i> Edit Location</button>
+        </div>
+    </div>
+    <footer>© 2025 Alfaiz Integrated Academy — Free Access School Management System | All data editable</footer>
+</div>
+
+<!-- Modal -->
+<div id="genericModal" class="modal"><div class="modal-content" id="modalDynamicContent"></div></div>
+
+<script>
+    // ========== COMPLETE CLASS LIST ==========
+    const classList = ["PP1","PP2","GRADE 1","GRADE 2","GRADE 3","GRADE 4","GRADE 5","GRADE 6","YEAR 5","YEAR 6","YEAR 7","YEAR 8","YEAR 9","YEAR 10","YEAR 11","YEAR 12"];
+    
+    // ========== SAMPLE DATA ==========
+    let studentsData = [
+        { id: "s1", name: "Aisha Noor", className: "GRADE 3", location: "Westlands, Nairobi", joinDate: "2024-01-15", picture: "https://randomuser.me/api/portraits/women/68.jpg", parentName: "Mrs. Fatima Noor", parentContact: "+254 712 345678" },
+        { id: "s2", name: "Rayan Ahmed", className: "YEAR 7", location: "Parklands, Nairobi", joinDate: "2023-09-10", picture: "https://randomuser.me/api/portraits/men/32.jpg", parentName: "Mr. Ahmed Khan", parentContact: "+254 722 998877" },
+        { id: "s3", name: "Maya Fatima", className: "PP2", location: "Kilimani, Nairobi", joinDate: "2025-02-01", picture: "https://randomuser.me/api/portraits/women/44.jpg", parentName: "Ms. Salma", parentContact: "+254 733 456123" },
+        { id: "s4", name: "Ethan Otieno", className: "GRADE 5", location: "Lavington, Nairobi", joinDate: "2024-08-20", picture: "https://randomuser.me/api/portraits/men/15.jpg", parentName: "Mr. Otieno", parentContact: "+254 711 223344" }
+    ];
+    
+    let teachersData = [
+        { id: "t1", name: "Prof. Samuel Omondi", subject: "Mathematics", className: "YEAR 10", location: "Karen, Nairobi", hireDate: "2019-08-20", picture: "https://randomuser.me/api/portraits/men/45.jpg", teacherContact: "+254 701 112233", email: "samuel@alfaiz.edu" },
+        { id: "t2", name: "Ms. Zara Khan", subject: "English & Literature", className: "GRADE 6", location: "Lavington, Nairobi", hireDate: "2021-02-14", picture: "https://randomuser.me/api/portraits/women/22.jpg", teacherContact: "+254 722 554433", email: "zara@alfaiz.edu" },
+        { id: "t3", name: "Mr. James Mwangi", subject: "General Science", className: "YEAR 8", location: "CBD, Nairobi", hireDate: "2020-11-05", picture: "https://randomuser.me/api/portraits/men/75.jpg", teacherContact: "+254 788 991122", email: "james@alfaiz.edu" }
+    ];
+    
+    // Contact & Location
+    let contactInfo = { phone: "+254 700 123456", email: "info@alfaizacademy.edu", website: "www.alfaizacademy.com" };
+    let locationInfo = { address: "123 Knowledge Street, Nairobi, Kenya" };
+    let currentCoverUrl = "https://placehold.co/1400x260/2c5a7a/ffffff?text=Alfaiz+Integrated+Academy";
+    let activeClassFilter = "ALL";
+    
+    // ========== HELPER FUNCTIONS ==========
+    function updateTotals() {
+        document.getElementById("totalStudentsCount").innerText = studentsData.length;
+        document.getElementById("totalTeachersCount").innerText = teachersData.length;
+        document.getElementById("totalClassesCount").innerText = classList.length;
+    }
+    
+    function getClassCounts() {
+        let studentCounts = {}, teacherCounts = {};
+        studentsData.forEach(s => studentCounts[s.className] = (studentCounts[s.className] || 0) + 1);
+        teachersData.forEach(t => teacherCounts[t.className] = (teacherCounts[t.className] || 0) + 1);
+        return { studentCounts, teacherCounts };
+    }
+    
+    function renderClasses() {
+        const container = document.getElementById("classesContainer");
+        if (!container) return;
+        const { studentCounts, teacherCounts } = getClassCounts();
+        let allStats = `📚${studentsData.length} | 👩‍🏫${teachersData.length}`;
+        let html = `<span class="class-badge ${activeClassFilter === 'ALL' ? 'active' : ''}" data-class="ALL">🏠 ALL CLASSES <span class="class-stats">${allStats}</span></span>`;
+        classList.forEach(cls => {
+            let sCount = studentCounts[cls] || 0;
+            let tCount = teacherCounts[cls] || 0;
+            html += `<span class="class-badge ${activeClassFilter === cls ? 'active' : ''}" data-class="${cls}">${cls} <span class="class-stats"><i class="fas fa-user"></i>${sCount} <i class="fas fa-chalkboard"></i>${tCount}</span></span>`;
+        });
+        container.innerHTML = html;
+        
+        document.querySelectorAll(".class-badge").forEach(el => {
+            el.addEventListener("click", () => {
+                activeClassFilter = el.getAttribute("data-class");
+                renderClasses();
+                renderStudents();
+                renderTeachers();
+            });
+        });
+    }
+    
+    function getFilteredStudents() {
+        if (activeClassFilter === "ALL") return studentsData;
+        return studentsData.filter(s => s.className === activeClassFilter);
+    }
+    
+    function getFilteredTeachers() {
+        if (activeClassFilter === "ALL") return teachersData;
+        return teachersData.filter(t => t.className === activeClassFilter);
+    }
+    
+    function renderStudents() {
+        const container = document.getElementById("studentsList");
+        const filtered = getFilteredStudents();
+        if (!container) return;
+        if (filtered.length === 0) {
+            container.innerHTML = "<div style='padding:20px; text-align:center; color:#888;'>✨ No students in this class</div>";
+            return;
+        }
+        container.innerHTML = filtered.map(s => `
+            <div class="person-item">
+                <img class="person-img" src="${s.picture}" onerror="this.src='https://placehold.co/65x65/e0e7ef/333?text=S'">
+                <div class="person-details">
+                    <div class="person-name">${escapeHtml(s.name)}</div>
+                    <div class="person-meta"><i class="fas fa-school"></i> ${escapeHtml(s.className)} | <i class="fas fa-map-pin"></i> ${escapeHtml(s.location)}</div>
+                    <div class="person-meta"><i class="fas fa-calendar"></i> Enrolled: ${s.joinDate}</div>
+                    <div class="person-meta"><i class="fas fa-user-friends"></i> Parent: ${escapeHtml(s.parentName)} | <i class="fas fa-phone-alt"></i> ${s.parentContact}</div>
+                </div>
+                <button class="edit-person-btn" data-id="${s.id}" data-type="student"><i class="fas fa-edit"></i> Edit</button>
+            </div>
+        `).join('');
+        attachEditEvents();
+    }
+    
+    function renderTeachers() {
+        const container = document.getElementById("teachersList");
+        const filtered = getFilteredTeachers();
+        if (!container) return;
+        if (filtered.length === 0) {
+            container.innerHTML = "<div style='padding:20px; text-align:center; color:#888;'>✨ No teachers in this class</div>";
+            return;
+        }
+        container.innerHTML = filtered.map(t => `
+            <div class="person-item">
+                <img class="person-img" src="${t.picture}" onerror="this.src='https://placehold.co/65x65/e0e7ef/333?text=T'">
+                <div class="person-details">
+                    <div class="person-name">${escapeHtml(t.name)}</div>
+                    <div class="person-meta"><i class="fas fa-chalkboard"></i> ${escapeHtml(t.subject)} | Class: ${escapeHtml(t.className)}</div>
+                    <div class="person-meta"><i class="fas fa-map-pin"></i> ${escapeHtml(t.location)} | <i class="fas fa-calendar"></i> Joined: ${t.hireDate}</div>
+                    <div class="person-meta"><i class="fas fa-phone-alt"></i> ${t.teacherContact} | <i class="fas fa-envelope"></i> ${t.email}</div>
+                </div>
+                <button class="edit-person-btn" data-id="${t.id}" data-type="teacher"><i class="fas fa-edit"></i> Edit</button>
+            </div>
+        `).join('');
+        attachEditEvents();
+    }
+    
+    function attachEditEvents() {
+        document.querySelectorAll(".edit-person-btn[data-type='student']").forEach(btn => {
+            btn.addEventListener("click", () => openStudentEditModal(btn.getAttribute("data-id")));
+        });
+        document.querySelectorAll(".edit-person-btn[data-type='teacher']").forEach(btn => {
+            btn.addEventListener("click", () => openTeacherEditModal(btn.getAttribute("data-id")));
+        });
+    }
+    
+    function updateContactUI() {
+        document.getElementById("contactPhone").innerText = contactInfo.phone;
+        document.getElementById("contactEmail").innerText = contactInfo.email;
+        document.getElementById("contactWeb").innerText = contactInfo.website;
+        document.getElementById("schoolLocation").innerText = locationInfo.address;
+        document.getElementById("currentDateDisplay").innerHTML = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+    
+    // Image upload helper
+    function uploadImageFromFile() {
+        return new Promise((resolve) => {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = "image/*";
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return resolve(null);
+                const reader = new FileReader();
+                reader.onload = (ev) => resolve(ev.target.result);
+                reader.readAsDataURL(file);
+            };
+            input.click();
+        });
+    }
+    
+    // Student Modal
+    async function openStudentEditModal(id = null) {
+        let student = id ? studentsData.find(s => s.id === id) : null;
+        const isNew = !student;
+        if (isNew) {
+            student = { id: "s"+Date.now(), name: "New Student", className: "GRADE 1", location: "Main Campus", joinDate: new Date().toISOString().slice(0,10), picture: "https://placehold.co/65x65/e0e7ef/333?text=S", parentName: "Guardian Name", parentContact: "+254 700 000000" };
+        }
+        const modalHtml = `
+            <h3>${isNew ? "➕ Add Student" : "✏️ Edit Student"}</h3>
+            <label>Full Name</label><input id="editName" value="${escapeHtml(student.name)}">
+            <label>Class</label><select id="editClass">${classList.map(c => `<option value="${c}" ${student.className === c ? 'selected' : ''}>${c}</option>`).join('')}</select>
+            <label>Location</label><input id="editLocation" value="${escapeHtml(student.location)}">
+            <label>Enrollment Date</label><input id="editDate" type="date" value="${student.joinDate}">
+            <label>Parent/Guardian Name</label><input id="editParentName" value="${escapeHtml(student.parentName)}">
+            <label>Parent Contact (Phone)</label><input id="editParentContact" value="${student.parentContact}">
+            <div class="image-upload-area" id="imageUploadTrigger"><i class="fas fa-cloud-upload-alt"></i> 📸 Click to Upload Student Picture</div>
+            <img id="previewImg" class="image-preview" src="${student.picture}" style="display: ${student.picture ? 'block' : 'none'}">
+            <div class="modal-buttons"><button class="cancel-modal">Cancel</button><button class="save-modal">Save</button></div>
+        `;
+        await showModalWithPromise(modalHtml);
+        
+        student.name = document.getElementById("editName").value;
+        student.className = document.getElementById("editClass").value;
+        student.location = document.getElementById("editLocation").value;
+        student.joinDate = document.getElementById("editDate").value;
+        student.parentName = document.getElementById("editParentName").value;
+        student.parentContact = document.getElementById("editParentContact").value;
+        
+        if (isNew) studentsData.push(student);
+        renderStudents();
+        renderClasses();
+        updateTotals();
+        
+        const uploadArea = document.getElementById("imageUploadTrigger");
+        if (uploadArea) {
+            uploadArea.onclick = async () => {
+                const dataUrl = await uploadImageFromFile();
+                if (dataUrl) {
+                    student.picture = dataUrl;
+                    const preview = document.getElementById("previewImg");
+                    if (preview) {
+                        preview.src = dataUrl;
+                        preview.style.display = "block";
+                    }
+                }
+            };
+        }
+    }
+    
+    // Teacher Modal
+    async function openTeacherEditModal(id = null) {
+        let teacher = id ? teachersData.find(t => t.id === id) : null;
+        const isNew = !teacher;
+        if (isNew) {
+            teacher = { id: "t"+Date.now(), name: "New Teacher", subject: "Subject", className: "GRADE 1", location: "School Campus", hireDate: new Date().toISOString().slice(0,10), picture: "https://placehold.co/65x65/e0e7ef/333?text=T", teacherContact: "+254 700 000000", email: "teacher@alfaiz.edu" };
+        }
+        const modalHtml = `
+            <h3>${isNew ? "➕ Add Teacher" : "✏️ Edit Teacher"}</h3>
+            <label>Full Name</label><input id="editName" value="${escapeHtml(teacher.name)}">
+            <label>Subject</label><input id="editSubject" value="${escapeHtml(teacher.subject)}">
+            <label>Assigned Class</label><select id="editClass">${classList.map(c => `<option value="${c}" ${teacher.className === c ? 'selected' : ''}>${c}</option>`).join('')}</select>
+            <label>Location</label><input id="editLocation" value="${escapeHtml(teacher.location)}">
+            <label>Hire Date</label><input id="editDate" type="date" value="${teacher.hireDate}">
+            <label>Teacher Contact (Phone)</label><input id="editPhone" value="${teacher.teacherContact}">
+            <label>Email Address</label><input id="editEmail" value="${teacher.email}">
+            <div class="image-upload-area" id="imageUploadTrigger"><i class="fas fa-cloud-upload-alt"></i> 📸 Click to Upload Teacher Picture</div>
+            <img id="previewImg" class="image-preview" src="${teacher.picture}" style="display: ${teacher.picture ? 'block' : 'none'}">
+            <div class="modal-buttons"><button class="cancel-modal">Cancel</button><button class="save-modal">Save</button></div>
+        `;
+        await showModalWithPromise(modalHtml);
+        
+        teacher.name = document.getElementById("editName").value;
+        teacher.subject = document.getElementById("editSubject").value;
+        teacher.className = document.getElementById("editClass").value;
+        teacher.location = document.getElementById("editLocation").value;
+        teacher.hireDate = document.getElementById("editDate").value;
+        teacher.teacherContact = document.getElementById("editPhone").value;
+        teacher.email = document.getElementById("editEmail").value;
+        
+        if (isNew) teachersData.push(teacher);
+        renderTeachers();
+        renderClasses();
+        updateTotals();
+        
+        const uploadArea = document.getElementById("imageUploadTrigger");
+        if (uploadArea) {
+            uploadArea.onclick = async () => {
+                const dataUrl = await uploadImageFromFile();
+                if (dataUrl) {
+                    teacher.picture = dataUrl;
+                    const preview = document.getElementById("previewImg");
+                    if (preview) {
+                        preview.src = dataUrl;
+                        preview.style.display = "block";
+                    }
+                }
+            };
+        }
+    }
+    
+    function showModalWithPromise(html) {
+        return new Promise((resolve) => {
+            const modal = document.getElementById("genericModal");
+            const contentDiv = document.getElementById("modalDynamicContent");
+            contentDiv.innerHTML = html;
+            modal.style.display = "flex";
+            const cancelBtn = contentDiv.querySelector(".cancel-modal");
+            const saveBtn = contentDiv.querySelector(".save-modal");
+            cancelBtn.onclick = () => { modal.style.display = "none"; resolve(false); };
+            saveBtn.onclick = () => { modal.style.display = "none"; resolve(true); };
+        });
+    }
+    
+    function editContactModal() {
+        const html = `<h3>Edit Contact Details</h3><label>Phone Number</label><input id="phone" value="${contactInfo.phone}"><label>Email Address</label><input id="email" value="${contactInfo.email}"><label>Website</label><input id="website" value="${contactInfo.website}"><div class="modal-buttons"><button class="cancel-modal">Cancel</button><button class="save-modal">Save</button></div>`;
+        showModalWithPromise(html).then(() => {
+            contactInfo.phone = document.getElementById("phone").value;
+            contactInfo.email = document.getElementById("email").value;
+            contactInfo.website = document.getElementById("website").value;
+            updateContactUI();
+        });
+    }
+    
+    function editLocationModal() {
+        const html = `<h3>Edit Location</h3><label>School Address</label><input id="address" value="${locationInfo.address}"><div class="modal-buttons"><button class="cancel-modal">Cancel</button><button class="save-modal">Save</button></div>`;
+        showModalWithPromise(html).then(() => {
+            locationInfo.address = document.getElementById("address").value;
+            updateContactUI();
+        });
+    }
+    
+    async function editCoverWithUpload() {
+        const dataUrl = await uploadImageFromFile();
+        if (dataUrl) {
+            currentCoverUrl = dataUrl;
+            document.getElementById("coverImage").src = currentCoverUrl;
+        } else {
+            alert("Please select an image file.");
+        }
+    }
+    
+    function escapeHtml(str) {
+        return String(str).replace(/[&<>]/g, function(m) {
+            return m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;';
+        });
+    }
+    
+    // ========== INITIALIZATION ==========
+    document.getElementById("globalAddStudentBtn").onclick = () => openStudentEditModal(null);
+    document.getElementById("globalAddTeacherBtn").onclick = () => openTeacherEditModal(null);
+    document.getElementById("editContactBtn").onclick = editContactModal;
+    document.getElementById("editLocationBtn").onclick = editLocationModal;
+    document.getElementById("editCoverBtn").onclick = editCoverWithUpload;
+    
+    // Load everything
+    renderClasses();
+    renderStudents();
+    renderTeachers();
+    updateTotals();
+    updateContactUI();
+    document.getElementById("coverImage").src = currentCoverUrl;
+</script>
+</body>
+</html>
